@@ -1,0 +1,22 @@
+{
+	"name": "epico-backend",
+	"packageManager": "yarn@3.1.1",
+	"scripts": {
+		"start": "yarn build && node --enable-source-maps ./dist/index.js",
+		"format": "yarn prettier --write .",
+		"format:check": "yarn prettier --check .",
+		"build": "yarn tsc"
+	},
+	"devDependencies": {
+		"@types/express": "^4",
+		"@typescript-eslint/eslint-plugin": "^5.11.0",
+		"@typescript-eslint/parser": "^5.11.0",
+		"eslint": "^8.8.0",
+		"prettier": "^2.5.1",
+		"typescript": "^4.5.5"
+	},
+	"dependencies": {
+		"express": "^4.17.2",
+		"sequelize": "^6.16.1"
+	}
+}
