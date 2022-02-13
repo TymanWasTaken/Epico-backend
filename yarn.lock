@@ -67,7 +67,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/body-parser@npm:*":
+"@types/body-parser@npm:*, @types/body-parser@npm:^1":
   version: 1.19.2
   resolution: "@types/body-parser@npm:1.19.2"
   dependencies:
@@ -371,7 +371,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.19.1":
+"body-parser@npm:1.19.1, body-parser@npm:^1.19.1":
   version: 1.19.1
   resolution: "body-parser@npm:1.19.1"
   dependencies:
@@ -581,11 +581,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "epico-backend@workspace:."
   dependencies:
+    "@types/body-parser": ^1
     "@types/express": ^4
     "@typescript-eslint/eslint-plugin": ^5.11.0
     "@typescript-eslint/parser": ^5.11.0
+    body-parser: ^1.19.1
     eslint: ^8.8.0
     express: ^4.17.2
+    jose: ^4.5.0
     prettier: ^2.5.1
     sequelize: ^6.16.1
     typescript: ^4.5.5
@@ -1085,6 +1088,13 @@ __metadata:
   version: 2.0.0
   resolution: "isexe@npm:2.0.0"
   checksum: 26bf6c5480dda5161c820c5b5c751ae1e766c587b1f951ea3fcfc973bafb7831ae5b54a31a69bd670220e42e99ec154475025a468eae58ea262f813fdc8d1c62
+  languageName: node
+  linkType: hard
+
+"jose@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "jose@npm:4.5.0"
+  checksum: 51142150a9f571ca318842d34ac0daec49fb70bfb6034c68fd46d8c804a8325065876067202310c8ff3cbfc5ca8e44d4712467b4da0d3cadf1e47c96989ca4ca
   languageName: node
   linkType: hard
 
