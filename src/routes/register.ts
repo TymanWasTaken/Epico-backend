@@ -1,17 +1,16 @@
 import type { Request, Response } from 'express';
-import { Auth } from '../auth';
 import { User } from '../models/User';
 import { Middleware, Route, RouteOptions } from '../route';
 import bcrypt from 'bcrypt';
 
 @RouteOptions({
-	path: '/auth/login',
+	path: '/auth/register',
 	middleware: [Middleware.Json],
 	spec: {
-		description: 'Manages user authentication',
+		description: 'Registers a user',
 		post: {
 			requestBody: {
-				description: 'The body of the authentication request',
+				description: 'The body of the registration request',
 				required: true,
 				content: {
 					"application/json": {
@@ -39,41 +38,37 @@ import bcrypt from 'bcrypt';
 			},
 			responses: {
 				'200': {
-					description: 'Successfully logs in and returns the JWT token.',
+					description: 'Successfully registered the user.',
 					content: {
-						'application/json': {
+						"application/json": {
 							schema: {
+								description: 'The success response.',
 								type: 'object',
-								description: 'The successful login response.',
 								properties: {
-									token: {
-										type: 'string',
-										description: 'The signed JWT token.'
-									},
 									success: {
 										type: 'boolean',
-										description: 'Whether the login was successful.'
+										description: 'Whether the registration was successful.'
 									}
 								}
 							}
 						}
 					}
 				},
-				'401': {
-					description: 'Not authorized.',
+				'400': {
+					description: 'Part of the request was invalid.',
 					content: {
-						'application/json': {
+						"application/json": {
 							schema: {
+								description: 'The error response.',
 								type: 'object',
-								description: 'The failed login response.',
 								properties: {
+									success: {
+										type: 'boolean',
+										description: 'Whether the registration was successful.'
+									},
 									error: {
 										type: 'string',
 										description: 'The error message.'
-									},
-									success: {
-										type: 'boolean',
-										description: 'Whether the login was successful.'
 									}
 								}
 							}
@@ -84,28 +79,31 @@ import bcrypt from 'bcrypt';
 		}
 	}
 })
-export default class Login extends Route {
+export default class Register extends Route {
 	public override async post(req: Request, res: Response) {
 		const { username, password }: {
 			username: string;
 			password: string;
 		} = req.body;
-		const user = await User.findOne({
+		const userModel = await User.count({
 			where: {
 				username
 			}
 		})
-		if (!(user && await bcrypt.compare(password, user.password))) {
-			res.status(401).json({
+		if (userModel > 0) {
+			res.status(400).json({
 				success: false,
-				message: 'Invalid username or password.'
+				message: 'Username already registered.'
 			});
-			return
+			return;
 		}
-		const token = await Auth.createToken(req.body.username);
-		res.send({
-			success: true,
-			token: token
+		const hash = await bcrypt.hash(password, 15);
+		await User.create({
+			username: username,
+			password: hash
+		})
+		res.status(200).json({
+			success: true
 		});
 	}
 }
